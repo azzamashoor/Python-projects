@@ -1,0 +1,58 @@
+import numpy as np 
+csv_file=open("Data.csv","r")  
+
+data=[]
+age_sum=0
+age_count=0
+weight_sum=0
+weight_count=0
+min_age=float("inf")
+max_age=float("-inf")
+min_weight=float("inf")
+oldest_person=""
+ages=[]
+weights=[]
+
+for line in csv_file: 
+    if "Age" in line: 
+        continue
+    data= line.strip().split(',') 
+    print(data)
+    age=int(data[2]) 
+    weight=int(data[3])
+    name=data[1]
+    age_sum+=age
+    age_count+=1
+    weight_sum+=weight
+    weight_count+=1
+    
+    ages.append(age)
+    weights.append(weight)
+    if age<min_age:
+        min_age=age
+ 
+    elif age>max_age:
+        max_age=age
+
+    if age>max_age or (age==max_age and min_weight>weight) :
+        oldest_person=name
+        max_age=age
+        min_weight=weight
+           
+    if age_count>0 :
+      average_age=age_sum/age_count
+      avarage_weight=weight_sum/weight_count
+correlation = np.corrcoef(ages, weights)[0, 1]
+std_age= np.std(ages)
+std_weight=np.std(weights)
+   
+print(f"Average age= {average_age} years")
+print(f"Average weight= {avarage_weight} Kg")
+print(f"Minimum age= {min_age} years") 
+print(f"Maximum age= {max_age} years")
+print(f"the oldest person with the lowest weight: {oldest_person}")
+print(f"The correlation between age and weight: {correlation:.2f}")
+print(f"The standard deviation of ages: {std_age:.2f} Years")
+print(f"The standard deviation of weights: {std_weight:.2f} kg")
+
+csv_file.close() 
